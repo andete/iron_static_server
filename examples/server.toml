@@ -1,0 +1,9 @@
+version = "0.1.0"
+
+[vhost]
+name = "localhost"
+root = "localhost"
+
+[vhost]
+name = "media.localhost"
+root = "media.localhost"

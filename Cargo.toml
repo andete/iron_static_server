@@ -1,0 +1,14 @@
+[package]
+name = "iron_static_server"
+version = "0.1.0"
+authors = ["Joost Yervante Damad <joost@damad.be>"]
+
+[dependencies]
+iron = "0.4"
+router = "0.4"
+staticfile = "0.3"
+iron_vhosts = "0.4"
+mount = "0.2"
+toml = "0.2"
+serde = "0.8"
+serde_derive = "0.8"
