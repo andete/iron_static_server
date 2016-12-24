@@ -1,13 +1,13 @@
 [tls]
-cert=cert.pem
-key=key.pem
+cert = "cert.pem"
+key = "key.pem"
 
-[vhost]
+[[vhost]]
 name = "localhost"
-static = "localhost"
+static_files = "localhost"
 
-[vhost]
+[[vhost]]
 name = "media.localhost"
-static = "media.localhost"
+static_files = "media.localhost"
 
 
