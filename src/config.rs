@@ -1,17 +1,18 @@
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    tls: Option<Tls>,
-    vhost: Vec<VHost>,
+    pub listen: String,
+    pub tls: Option<Tls>,
+    pub vhost: Vec<VHost>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct VHost {
-    name: String,
-    static_files: Option<String>,
+    pub hostname: String,
+    pub static_files: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Tls {
-    cert: String,
-    key: String,
+    pub cert: String,
+    pub key: String,
 }

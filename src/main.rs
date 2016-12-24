@@ -47,10 +47,6 @@ fn load_config() -> Result<Config> {
     Ok(config)
 }
 
-fn media_handler(_: &mut Request) -> IronResult<Response> {
-    Ok(Response::with((status::Ok, "media")))
-}
-
 fn make_static(vhosts: &mut Vhosts, hostname:&str, path:&str) {
     let mut mount = Mount::new();
     mount.mount("/", Static::new(Path::new(path)));
@@ -61,12 +57,14 @@ fn run() -> Result<()> {
     let config = load_config()?;
     println!("{:?}", config);
     let mut vhosts = Vhosts::new(|_: &mut Request| Ok(Response::with((status::InternalServerError, "vhost"))));
+    for vhost in &config.vhost {
+        let name = &vhost.hostname;
+        if let Some(ref static_files) = vhost.static_files {
+            make_static(&mut vhosts, name, static_files);
+        }
+    }
 
-    make_static(&mut vhosts, "localhost", "/tmp/foo");
-    //Add any host specific handlers
-    vhosts.add_host("media.localhost", media_handler);
-
-    Iron::new(vhosts).http("127.0.0.1:3000").unwrap(); // TODO
+    Iron::new(vhosts).http(config.listen.as_str()).unwrap(); // TODO remove unwrap :)
     Ok(())
 }
 
