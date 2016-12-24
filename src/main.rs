@@ -33,7 +33,7 @@ fn main() {
     let mut vhosts = Vhosts::new(|_: &mut Request| Ok(Response::with((status::Ok, "vhost"))));
 
     //Add any host specific handlers
-    vhosts.add_host("localhost", localhost_handler);
+    vhosts.add_host("localhost", mount);
     vhosts.add_host("media.localhost", media_handler);
 
     Iron::new(vhosts).http("127.0.0.1:3000").unwrap();
