@@ -12,3 +12,7 @@ mount = "*"
 toml = "*"
 serde = "*"
 serde_derive = "*"
+
+[replace]
+"iron_vhosts:0.4.0" = { git = 'https://github.com/andete/iron_vhosts', branch = "non_static_config" }
+

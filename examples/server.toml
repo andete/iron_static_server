@@ -1,9 +1,13 @@
-version = "0.1.0"
+[tls]
+cert=cert.pem
+key=key.pem
 
 [vhost]
 name = "localhost"
-root = "localhost"
+static = "localhost"
 
 [vhost]
 name = "media.localhost"
-root = "media.localhost"
+static = "media.localhost"
+
+

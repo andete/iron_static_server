@@ -1,6 +1,6 @@
 #[derive(Deserialize, Debug)]
 struct Config {
-    version: String,
+    tls: Option<Tls>,
     vhost: Vec<VHost>,
 }
 
@@ -8,4 +8,10 @@ struct Config {
 struct VHost {
     name: String,
     root: Option<String>
+}
+
+#[derive(Deserialize, Debug)]
+struct Tls {
+    cert: String,
+    key: String,
 }

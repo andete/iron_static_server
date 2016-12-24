@@ -101,10 +101,16 @@ dependencies = [
 [[package]]
 name = "iron_vhosts"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+source = "git+https://github.com/andete/iron_vhosts?branch=non_static_config#25e2ab52a1a0868b940087c6b4a207c1313625b3"
 dependencies = [
  "iron 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "iron_vhosts"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+replace = "iron_vhosts 0.4.0 (git+https://github.com/andete/iron_vhosts?branch=non_static_config)"
 
 [[package]]
 name = "kernel32-sys"
@@ -393,6 +399,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum hyper 0.9.14 (registry+https://github.com/rust-lang/crates.io-index)" = "bcb3fc65554155980167fb821d05c7c66177f92464976c0b676a19d9e03387a7"
 "checksum idna 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1053236e00ce4f668aeca4a769a09b3bf5a682d802abd6f3cb39374f6b162c11"
 "checksum iron 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9fb1b2d809f84bf347e472d5758762b5c804e0c622970235f156d82673e4d334"
+"checksum iron_vhosts 0.4.0 (git+https://github.com/andete/iron_vhosts?branch=non_static_config)" = "<none>"
 "checksum iron_vhosts 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "66bbc96a85415035fb3d7b560ef7c84aa6fe6021ee392432f3df95e601b2186b"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum language-tags 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "a91d884b6667cd606bb5a69aa0c99ba811a115fc68915e7056ec08a46e93199a"
