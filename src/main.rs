@@ -42,8 +42,10 @@ fn load_config() -> Result<Config> {
         None => Err(ErrorKind::ParserError { errors:parser.errors }),
     }?;
     let value = toml::Value::Table(parsed);
+    println!("value: {:?}", value);
     let mut decoder = toml::Decoder::new(value);
     let config:Config = serde::Deserialize::deserialize(&mut decoder)?;
+    println!("config: {:?}", config);
     Ok(config)
 }
 
@@ -57,14 +59,17 @@ fn run() -> Result<()> {
     let config = load_config()?;
     println!("{:?}", config);
     let mut vhosts = Vhosts::new(|_: &mut Request| Ok(Response::with((status::InternalServerError, "vhost"))));
-    for vhost in &config.vhost {
+    for (_name, vhost) in &config.vhost {
         let name = &vhost.hostname;
         if let Some(ref static_files) = vhost.static_files {
             make_static(&mut vhosts, name, static_files);
         }
     }
 
-    Iron::new(vhosts).http(config.listen.as_str()).unwrap(); // TODO remove unwrap :)
+    let child = std::thread::spawn(move || {
+        //Iron::new(vhosts).http(config.listen.as_str()).unwrap(); // TODO remove unwrap :)
+    });
+    child.join().unwrap(); // TODO
     Ok(())
 }
 

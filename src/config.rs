@@ -1,8 +1,15 @@
+use std::collections::HashMap;
+
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    pub listen: String,
+    pub listen: HashMap<String, Listen>,
+    pub vhost: HashMap<String, VHost>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Listen {
+    pub address:String,
     pub tls: Option<Tls>,
-    pub vhost: Vec<VHost>,
 }
 
 #[derive(Deserialize, Debug)]
