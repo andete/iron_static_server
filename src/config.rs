@@ -14,12 +14,13 @@ pub struct Listen {
 
 #[derive(Deserialize, Debug)]
 pub struct VHost {
+    pub listen: String,
     pub hostname: String,
     pub static_files: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Tls {
-    pub cert: String,
-    pub key: String,
+    pub cert:String,
+    pub key:String,
 }

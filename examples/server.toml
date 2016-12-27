@@ -1,19 +1,20 @@
-[listen.tls3000]
-address = "0.0.0.0:3000"
-[tls]
+[listen.tls3001]
+address = "0.0.0.0:3001"
+
+[listen.tls3001.tls]
 cert = "cert.pem"
 key = "key.pem"
 
-[listen.normal3001]
+[listen.normal3000]
 address = "0.0.0.0:3000"
 
 [vhost.website1]
-listen = "tls3000"
+listen = "tls3001"
 hostname = "website1.local"
 static_files = "/tmp/website1"
 
 [vhost.website2]
-listen = "normal3001"
+listen = "normal3000"
 hostname = "website2.local"
 static_files = "/tmp/website2"
 
