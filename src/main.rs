@@ -6,7 +6,7 @@ extern crate daemonize;
 extern crate argparse;
 
 use syslog::Facility;
-use argparse::{ArgumentParser, StoreTrue, Store};
+use argparse::{ArgumentParser, StoreTrue, Store, StoreOption};
 
 fn main() {
     
@@ -19,12 +19,16 @@ fn main() {
 
     let mut daemonize = false;
     let mut filename = String::new();
+    let mut username:Option<String> = None;
     {
     let mut ap = ArgumentParser::new();
     ap.set_description("Run the iron based static vhosts/TLS web server");
     ap.refer(&mut daemonize)
             .add_option(&["-d", "--deamonize"], StoreTrue,
                         "deamonize the process");
+    ap.refer(&mut username)
+            .add_option(&["-u", "--username"], StoreOption,
+                        "drop privileges to user");
     ap.refer(&mut filename)
         .add_argument("filename", Store,
                       "toml configuration file")
