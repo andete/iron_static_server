@@ -2,7 +2,6 @@ extern crate iron_static_server;
 #[macro_use]
 extern crate log;
 extern crate syslog;
-extern crate daemonize;
 extern crate argparse;
 
 use syslog::Facility;
@@ -16,6 +15,7 @@ fn main() {
         max_level.set(log::LogLevelFilter::Info);
         syslog
     }).unwrap();
+    info!("starting");
 
     let mut daemonize = false;
     let mut filename = String::new();
@@ -37,7 +37,7 @@ fn main() {
         ap.parse_args_or_exit();
     }
     
-    if let Err(ref e) = iron_static_server::run(&filename) {
+    if let Err(ref e) = iron_static_server::run(&filename, daemonize, username) {
         use ::std::io::Write;
         let stderr = &mut ::std::io::stderr();
         let errmsg = "Error writing to stderr";

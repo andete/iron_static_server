@@ -12,7 +12,7 @@ extern crate serde_derive;
 extern crate error_chain;
 #[macro_use]
 extern crate log;
-extern crate env_logger;
+extern crate daemonize;
 
 use std::path::{Path,PathBuf};
 use std::fs::File;
@@ -56,7 +56,7 @@ fn make_static(vhosts: &mut Vhosts, hostname:&str, path:&str) {
     vhosts.add_host(hostname, mount);
 }
 
-pub fn run(filename:&str) -> Result<()> {
+pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Result<()> {
     let config = load_config(&filename)?;
     println!("{:?}", config);
     let mut vhost_h = HashMap::new();
@@ -72,6 +72,19 @@ pub fn run(filename:&str) -> Result<()> {
             if let Some(ref static_files) = vhost.static_files {
                 make_static(&mut vhosts, name, static_files);
                 println!("static {} on {}", name, vhost.listen);
+            }
+        }
+    }
+    if want_daemonize {
+        let mut d = daemonize::Daemonize::new();
+        if let Some(name) = username {
+            d = d.user(name.as_str());
+        }
+        match d.start() {
+            Ok(_) => (),
+            Err(e) => {
+                error!("error daemonizing: {:?}", e);
+                return Err(e.into())
             }
         }
     }
