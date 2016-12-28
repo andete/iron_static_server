@@ -6,13 +6,11 @@ tls = { cert = "cert.pem", key = "key.pem" }
 address = "0.0.0.0:3000"
 
 [vhost.website1]
-listen = "tls3001"
+listen = "normal3000"
 hostname = "website1.local"
-static_files = "/tmp/website1"
+static_files = "website1"
 
 [vhost.website2]
-listen = "normal3000"
+listen = "tls3001"
 hostname = "website2.local"
-static_files = "/tmp/website2"
-
-
+static_files = "website2"
