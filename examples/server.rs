@@ -7,6 +7,8 @@ use std::env;
 
 fn main() {
     env_logger::init().unwrap();
+    // change to the examples directory, to make the relative paths
+    // contained in the example config work
     let mut dirname = String::new();
     dirname.push_str(env!("CARGO_MANIFEST_DIR"));
     dirname.push_str("/examples");
