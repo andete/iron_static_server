@@ -2,27 +2,38 @@ extern crate iron_static_server;
 #[macro_use]
 extern crate log;
 extern crate syslog;
-
-use std::env;
+extern crate daemonize;
+extern crate argparse;
 
 use syslog::Facility;
+use argparse::{ArgumentParser, StoreTrue, Store};
 
 fn main() {
+    
+    // set up logging
     let syslog = syslog::unix(Facility::LOG_USER).unwrap();
     log::set_logger(|max_level| {
         max_level.set(log::LogLevelFilter::Info);
         syslog
     }).unwrap();
+
+    let mut daemonize = false;
+    let mut filename = String::new();
+    {
+    let mut ap = ArgumentParser::new();
+    ap.set_description("Run the iron based static vhosts/TLS web server");
+    ap.refer(&mut daemonize)
+            .add_option(&["-d", "--deamonize"], StoreTrue,
+                        "deamonize the process");
+    ap.refer(&mut filename)
+        .add_argument("filename", Store,
+                      "toml configuration file")
+            .required();
     
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        println!("Usage: {:?} <configfile.toml>", args[0]);
-        return;
+        ap.parse_args_or_exit();
     }
     
-    let filename = &args[1];
-
-    if let Err(ref e) = iron_static_server::run(filename) {
+    if let Err(ref e) = iron_static_server::run(&filename) {
         use ::std::io::Write;
         let stderr = &mut ::std::io::stderr();
         let errmsg = "Error writing to stderr";
