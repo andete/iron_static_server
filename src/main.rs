@@ -1,15 +1,22 @@
 extern crate iron_static_server;
 #[macro_use]
 extern crate log;
-extern crate env_logger;
+extern crate syslog;
 
 use std::env;
 
+use syslog::Facility;
+
 fn main() {
-    env_logger::init().unwrap();
+    let syslog = syslog::unix(Facility::LOG_USER).unwrap();
+    log::set_logger(|max_level| {
+        max_level.set(log::LogLevelFilter::Info);
+        syslog
+    }).unwrap();
+    
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        error!("usage : {:?} <configfile.toml>", args[0]);
+        println!("Usage: {:?} <configfile.toml>", args[0]);
         return;
     }
     
