@@ -23,6 +23,7 @@ log = "0.3"
 syslog = "3.2"
 daemonize = "0.2"
 argparse = "0.2"
+url = "1.2.4"
 
 [replace]
 "hyper:0.9.14" = { git = 'https://github.com/SergioBenitez/hyper.git', branch = '0.9.x' }

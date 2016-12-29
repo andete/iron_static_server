@@ -13,6 +13,7 @@ extern crate error_chain;
 #[macro_use]
 extern crate log;
 extern crate daemonize;
+extern crate url;
 
 use std::path::{Path,PathBuf};
 use std::fs::File;
@@ -24,8 +25,9 @@ use staticfile::Static;
 use mount::Mount;
 use iron_vhosts::Vhosts;
 use iron::status;
+use iron::headers;
 
-use config::Config;
+use config::{Config, Redirect};
 use ierror::*;
 
 fn read_file(name: &str) -> Result<String> {
@@ -56,6 +58,21 @@ fn make_static(vhosts: &mut Vhosts, hostname:&str, path:&str) {
     vhosts.add_host(hostname, mount);
 }
 
+impl iron::Handler for Redirect {
+    fn handle(&self, req:&mut Request) -> IronResult<Response> {
+        let mut url:url::Url = req.url.clone().into_generic_url();
+        url.set_host(Some(&self.host)).unwrap();
+        if let Some(ref scheme) = self.scheme {
+            url.set_scheme(scheme).unwrap();
+        }
+        url.set_port(self.port).unwrap();
+        let mut res = Response::with(status::MovedPermanently);
+        let location = headers::Location(url.as_str().into());
+        res.headers.set(location);
+        Ok(res)
+    }
+}
+
 pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Result<()> {
     let config = load_config(&filename)?;
     println!("{:?}", config);
@@ -72,6 +89,9 @@ pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Resul
             if let Some(ref static_files) = vhost.static_files {
                 make_static(&mut vhosts, name, static_files);
                 println!("static {} on {}", name, vhost.listen);
+            } else if let Some(ref redirect) = vhost.redirect {
+                vhosts.add_host(name.as_str(), redirect.clone());
+                println!("redirect {} on {}", name, vhost.listen);
             }
         }
     }

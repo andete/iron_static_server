@@ -14,3 +14,8 @@ static_files = "website1"
 listen = "tls3001"
 hostname = "website2.local"
 static_files = "website2"
+
+[vhost.website3]
+listen = "normal3000"
+hostname = "website3.local"
+redirect = { host = "www.rust-lang.org", scheme = "https" }
