@@ -25,7 +25,7 @@ use staticfile::Static;
 use mount::Mount;
 use iron_vhosts::Vhosts;
 use iron::status;
-use iron::headers;
+use iron::modifiers;
 
 use config::{Config, Redirect};
 use ierror::*;
@@ -66,9 +66,8 @@ impl iron::Handler for Redirect {
             url.set_scheme(scheme).unwrap();
         }
         url.set_port(self.port).unwrap();
-        let mut res = Response::with(status::MovedPermanently);
-        let location = headers::Location(url.as_str().into());
-        res.headers.set(location);
+        let url = iron::Url::from_generic_url(url).unwrap();
+        let res = Response::with((status::MovedPermanently, modifiers::Redirect(url)));
         Ok(res)
     }
 }
