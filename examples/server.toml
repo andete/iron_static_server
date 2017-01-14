@@ -1,6 +1,6 @@
 [listen.tls3001]
 address = "0.0.0.0:3001"
-tls = { cert = "cert.pem", key = "key.pem" }
+tls = { identity = "identity.p12", secret = "mypass" }
 
 [listen.normal3000]
 address = "0.0.0.0:3000"

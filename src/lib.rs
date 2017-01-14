@@ -1,5 +1,3 @@
-#![feature(proc_macro)]
-
 extern crate iron;
 extern crate iron_vhosts;
 extern crate staticfile;
@@ -14,8 +12,9 @@ extern crate error_chain;
 extern crate log;
 extern crate daemonize;
 extern crate url;
+extern crate hyper_native_tls;
 
-use std::path::{Path,PathBuf};
+use std::path::Path;
 use std::fs::File;
 use std::io::Read;
 use std::collections::HashMap;
@@ -60,7 +59,7 @@ fn make_static(vhosts: &mut Vhosts, hostname:&str, path:&str) {
 
 impl iron::Handler for Redirect {
     fn handle(&self, req:&mut Request) -> IronResult<Response> {
-        let mut url:url::Url = req.url.clone().into_generic_url();
+        let mut url:url::Url = req.url.clone().into();
         url.set_host(Some(&self.host)).unwrap();
         if let Some(ref scheme) = self.scheme {
             url.set_scheme(scheme).unwrap();
@@ -119,10 +118,9 @@ pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Resul
                     iron.http(address)
                 },
                 Some(ref tls) => {
-                    let cert = PathBuf::from(&tls.cert);
-                    let key = PathBuf::from(&tls.key);
+                    let tls = hyper_native_tls::NativeTlsServer::new(&tls.identity, &tls.secret).unwrap();
                     println!("https on {}", address);
-                    iron.https(address, cert, key)
+                    iron.https(address, tls)
                 },
             };
             children.push(std::thread::spawn(move || { listener.unwrap() }));

@@ -9,11 +9,11 @@ homepage = "https://github.com/andete/iron_static_server"
 repository = "https://github.com/andete/iron_static_server"
 
 [dependencies]
-iron = { version = "0.4", features = ["ssl"] }
-router = "0.4"
+iron = "0.5"
+router = "0.5"
 staticfile = "0.3"
-iron_vhosts = "0.4"
-mount = "0.2"
+iron_vhosts = "0.4.1"
+mount = "0.3"
 toml = { version = "0.2", features = ["serde"], default-features = false }
 serde = "0.8"
 serde_derive = "0.8"
@@ -24,6 +24,9 @@ syslog = "3.2"
 daemonize = "0.2"
 argparse = "0.2"
 url = "1.2.4"
+hyper-native-tls = "0.2"
+
 
 [replace]
-"hyper:0.9.14" = { git = 'https://github.com/SergioBenitez/hyper.git', branch = '0.9.x' }
+"iron_vhosts:0.4.1" = { git = 'https://github.com/andete/iron_vhosts.git', branch = 'iron_0.5_compat' }
+"staticfile:0.3.1" = { git = 'https://github.com/andete/staticfile.git', branch = 'iron_0.5_compat' }

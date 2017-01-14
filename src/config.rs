@@ -22,8 +22,8 @@ pub struct VHost {
 
 #[derive(Deserialize, Debug)]
 pub struct Tls {
-    pub cert:String,
-    pub key:String,
+    pub identity:String,
+    pub secret:String,
 }
 
 #[derive(Deserialize, Debug, Clone)]
