@@ -22,9 +22,9 @@ env_logger = "0.3"
 log = "0.3"
 syslog = "3.2"
 daemonize = "0.2"
-argparse = "0.2"
 url = "1.2.4"
 hyper-native-tls = "0.2"
+clap = "2.20"
 
 
 [replace]

@@ -71,7 +71,7 @@ impl iron::Handler for Redirect {
     }
 }
 
-pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Result<()> {
+pub fn run(filename:&str, want_daemonize:bool, username:Option<&str>) -> Result<()> {
     let config = load_config(&filename)?;
     println!("{:?}", config);
     let mut vhost_h = HashMap::new();
@@ -96,7 +96,7 @@ pub fn run(filename:&str, want_daemonize:bool, username:Option<String>) -> Resul
     if want_daemonize {
         let mut d = daemonize::Daemonize::new();
         if let Some(name) = username {
-            d = d.user(name.as_str());
+            d = d.user(name);
         }
         match d.start() {
             Ok(_) => (),

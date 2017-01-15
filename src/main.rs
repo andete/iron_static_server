@@ -2,10 +2,10 @@ extern crate iron_static_server;
 #[macro_use]
 extern crate log;
 extern crate syslog;
-extern crate argparse;
+extern crate clap;
 
 use syslog::Facility;
-use argparse::{ArgumentParser, StoreTrue, Store, StoreOption};
+use clap::{Arg, App};
 
 fn main() {
     
@@ -17,25 +17,31 @@ fn main() {
     }).unwrap();
     info!("starting");
 
-    let mut daemonize = false;
-    let mut filename = String::new();
-    let mut username:Option<String> = None;
-    {
-    let mut ap = ArgumentParser::new();
-    ap.set_description("Run the iron based static vhosts/TLS web server");
-    ap.refer(&mut daemonize)
-            .add_option(&["-d", "--deamonize"], StoreTrue,
-                        "deamonize the process");
-    ap.refer(&mut username)
-            .add_option(&["-u", "--username"], StoreOption,
-                        "drop privileges to user");
-    ap.refer(&mut filename)
-        .add_argument("filename", Store,
-                      "toml configuration file")
-            .required();
-    
-        ap.parse_args_or_exit();
-    }
+    let matches = App::new("Iron Static Server")
+                          .version(env!("CARGO_PKG_VERSION"))
+                          .author("Joost Yervante Damad <joost@damad.be>")
+                          .about("Serve multiple static websites.")
+                          .arg(Arg::with_name("DAEMONIZE")
+                               .short("d")
+                               .long("daemonize")
+                               .required(false)
+                               .help("daemonize the process"))
+                          .arg(Arg::with_name("USER")
+                               .short("u")
+                               .long("username")
+                               .required(false)
+                               .value_name("USERNAME")
+                               .takes_value(true)
+                               .help("drop privileges to user"))
+                          .arg(Arg::with_name("FILENAME")
+                               .required(true)
+                               .index(1)
+                               .help("the configuration filename"))
+                          .get_matches();
+
+    let filename = matches.value_of("FILENAME").unwrap();
+    let daemonize = matches.is_present("DAEMONIZE");
+    let username = matches.value_of("USERNAME");
     
     if let Err(ref e) = iron_static_server::run(&filename, daemonize, username) {
         use ::std::io::Write;
