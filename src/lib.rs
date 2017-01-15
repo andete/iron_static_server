@@ -37,7 +37,7 @@ fn read_file(name: &str) -> Result<String> {
 }
 
 fn load_config(filename: &str) -> Result<Config> {
-    let config_str = read_file(&filename)?;
+    let config_str = read_file(filename)?;
     let mut parser = toml::Parser::new(&config_str);
     let parsed = match parser.parse() {
             Some(x) => Ok(x),
@@ -73,18 +73,18 @@ impl iron::Handler for Redirect {
 }
 
 pub fn run(filename: &str, want_daemonize: bool, username: Option<&str>) -> Result<()> {
-    let config = load_config(&filename)?;
+    let config = load_config(filename)?;
     println!("{:?}", config);
     let mut vhost_h = HashMap::new();
     // create a Vhosts per port we're listening on
-    for (name, _listen) in &config.listen {
+    for name in config.listen.keys() {
         let vhosts = Vhosts::new(|_: &mut Request| {
             Ok(Response::with((status::InternalServerError, "vhost")))
         });
         vhost_h.insert(name, vhosts);
     }
     // for each vhost add it to the Vhosts for the used listening address
-    for (_name, vhost) in &config.vhost {
+    for vhost in config.vhost.values() {
         if let Some(mut vhosts) = vhost_h.get_mut(&vhost.listen) {
             let name = &vhost.hostname;
             if let Some(ref static_files) = vhost.static_files {

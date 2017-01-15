@@ -14,7 +14,7 @@ fn main() {
     dirname.push_str("/examples");
     env::set_current_dir(&dirname).unwrap();
     let filename = "server.toml";
-    if let Err(ref e) = iron_static_server::run(&filename, false, None) {
+    if let Err(ref e) = iron_static_server::run(filename, false, None) {
         use ::std::io::Write;
         let stderr = &mut ::std::io::stderr();
         let errmsg = "Error writing to stderr";
