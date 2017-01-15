@@ -8,7 +8,7 @@ pub struct Config {
 
 #[derive(Deserialize, Debug)]
 pub struct Listen {
-    pub address:String,
+    pub address: String,
     pub tls: Option<Tls>,
 }
 
@@ -22,13 +22,13 @@ pub struct VHost {
 
 #[derive(Deserialize, Debug)]
 pub struct Tls {
-    pub identity:String,
-    pub secret:String,
+    pub identity: String,
+    pub secret: String,
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Redirect {
-    pub host:String,
-    pub scheme:Option<String>,
-    pub port:Option<u16>,
+    pub host: String,
+    pub scheme: Option<String>,
+    pub port: Option<u16>,
 }

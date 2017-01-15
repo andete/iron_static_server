@@ -36,30 +36,31 @@ fn read_file(name: &str) -> Result<String> {
     Ok(s)
 }
 
-fn load_config(filename:&str) -> Result<Config> {
+fn load_config(filename: &str) -> Result<Config> {
     let config_str = read_file(&filename)?;
     let mut parser = toml::Parser::new(&config_str);
     let parsed = match parser.parse() {
-        Some(x) => Ok(x),
-        None => Err(ErrorKind::ParserError { errors:parser.errors }),
-    }?;
+            Some(x) => Ok(x),
+            None => Err(ErrorKind::ParserError { errors: parser.errors }),
+        }
+        ?;
     let value = toml::Value::Table(parsed);
     println!("value: {:?}", value);
     let mut decoder = toml::Decoder::new(value);
-    let config:Config = serde::Deserialize::deserialize(&mut decoder)?;
+    let config: Config = serde::Deserialize::deserialize(&mut decoder)?;
     println!("config: {:?}", config);
     Ok(config)
 }
 
-fn make_static(vhosts: &mut Vhosts, hostname:&str, path:&str) {
+fn make_static(vhosts: &mut Vhosts, hostname: &str, path: &str) {
     let mut mount = Mount::new();
     mount.mount("/", Static::new(Path::new(path)));
     vhosts.add_host(hostname, mount);
 }
 
 impl iron::Handler for Redirect {
-    fn handle(&self, req:&mut Request) -> IronResult<Response> {
-        let mut url:url::Url = req.url.clone().into();
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        let mut url: url::Url = req.url.clone().into();
         url.set_host(Some(&self.host)).unwrap();
         if let Some(ref scheme) = self.scheme {
             url.set_scheme(scheme).unwrap();
@@ -71,13 +72,15 @@ impl iron::Handler for Redirect {
     }
 }
 
-pub fn run(filename:&str, want_daemonize:bool, username:Option<&str>) -> Result<()> {
+pub fn run(filename: &str, want_daemonize: bool, username: Option<&str>) -> Result<()> {
     let config = load_config(&filename)?;
     println!("{:?}", config);
     let mut vhost_h = HashMap::new();
     // create a Vhosts per port we're listening on
     for (name, _listen) in &config.listen {
-        let vhosts = Vhosts::new(|_: &mut Request| Ok(Response::with((status::InternalServerError, "vhost"))));
+        let vhosts = Vhosts::new(|_: &mut Request| {
+            Ok(Response::with((status::InternalServerError, "vhost")))
+        });
         vhost_h.insert(name, vhosts);
     }
     // for each vhost add it to the Vhosts for the used listening address
@@ -102,7 +105,7 @@ pub fn run(filename:&str, want_daemonize:bool, username:Option<&str>) -> Result<
             Ok(_) => (),
             Err(e) => {
                 error!("error daemonizing: {:?}", e);
-                return Err(e.into())
+                return Err(e.into());
             }
         }
     }
@@ -116,14 +119,15 @@ pub fn run(filename:&str, want_daemonize:bool, username:Option<&str>) -> Result<
                 None => {
                     println!("http on {}", address);
                     iron.http(address)
-                },
+                }
                 Some(ref tls) => {
-                    let tls = hyper_native_tls::NativeTlsServer::new(&tls.identity, &tls.secret).unwrap();
+                    let tls = hyper_native_tls::NativeTlsServer::new(&tls.identity, &tls.secret)
+                        .unwrap();
                     println!("https on {}", address);
                     iron.https(address, tls)
-                },
+                }
             };
-            children.push(std::thread::spawn(move || { listener.unwrap() }));
+            children.push(std::thread::spawn(move || listener.unwrap()));
         }
     }
 
