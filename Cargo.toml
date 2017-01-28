@@ -12,7 +12,7 @@ repository = "https://github.com/andete/iron_static_server"
 iron = "0.5"
 router = "0.5"
 staticfile = "0.3"
-iron_vhosts = "0.4.1"
+iron_vhosts = "0.5"
 mount = "0.3"
 toml = { version = "0.2", features = ["serde"], default-features = false }
 serde = "0.8"
@@ -28,5 +28,4 @@ clap = "2.20"
 
 
 [replace]
-"iron_vhosts:0.4.1" = { git = 'https://github.com/andete/iron_vhosts.git', branch = 'iron_0.5_compat' }
 "staticfile:0.3.1" = { git = 'https://github.com/andete/staticfile.git', branch = 'iron_0.5_compat' }

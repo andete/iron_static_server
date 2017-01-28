@@ -8,7 +8,7 @@ dependencies = [
  "error-chain 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "hyper-native-tls 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "iron 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "iron_vhosts 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iron_vhosts 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "mount 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "router 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -248,17 +248,11 @@ dependencies = [
 
 [[package]]
 name = "iron_vhosts"
-version = "0.4.1"
-source = "git+https://github.com/andete/iron_vhosts.git?branch=iron_0.5_compat#b17bf872a8ec2c97ed8efd6d4720a46b88c719fb"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "iron 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "iron_vhosts"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-replace = "iron_vhosts 0.4.1 (git+https://github.com/andete/iron_vhosts.git?branch=iron_0.5_compat)"
 
 [[package]]
 name = "kernel32-sys"
@@ -778,8 +772,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum hyper-native-tls 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "0e78f1ec6e10c3d39a3b5d1a454d6869883a7d038f3cf3a36d6d0e67db34f1aa"
 "checksum idna 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1053236e00ce4f668aeca4a769a09b3bf5a682d802abd6f3cb39374f6b162c11"
 "checksum iron 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2440ae846e7a8c7f9b401db8f6e31b4ea5e7d3688b91761337da7e054520c75b"
-"checksum iron_vhosts 0.4.1 (git+https://github.com/andete/iron_vhosts.git?branch=iron_0.5_compat)" = "<none>"
-"checksum iron_vhosts 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)" = "e8caa54337f8c9ff0d3712596681e44f77fa8e1a9cbfffa074229ec6b89fd90e"
+"checksum iron_vhosts 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d799dcfcd2d2236f21602063aebd744fed5e129cb3b3ba898544f19c9203ae10"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum language-tags 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "a91d884b6667cd606bb5a69aa0c99ba811a115fc68915e7056ec08a46e93199a"
 "checksum lazy_static 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "6abe0ee2e758cd6bc8a2cd56726359007748fbf4128da998b65d0b70f881e19b"
